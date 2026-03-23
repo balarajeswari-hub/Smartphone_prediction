@@ -1,0 +1,59 @@
+{% extends 'users/userbase.html' %}
+{% load static %}
+{% block contents %}
+<style>
+    .container {
+        max-width: 700px; margin: 40px auto; padding: 30px;
+        background: rgba(10, 20, 40, 0.5); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.5); color: #e2e8f0;
+    }
+    h1 { text-align: center; color: #00f0ff; margin-bottom: 30px; }
+    .alert { padding: 15px; margin-bottom: 15px; border-radius: 12px; border-left: 5px solid; display: flex; align-items: center; gap: 15px; background: rgba(255,255,255,0.05); }
+    .alert-danger { border-color: #ff2a5f; color: #ff2a5f; }
+    .alert-warning { border-color: #ffaa00; color: #ffaa00; }
+    .alert-info { border-color: #00f0ff; color: #00f0ff; }
+    .alert-icon { font-size: 24px; }
+    .settings-form { background: rgba(0,0,0,0.2); padding: 25px; border-radius: 15px; margin-top: 20px; border: 1px solid rgba(255,255,255,0.05); }
+    .form-group { margin-bottom: 20px; }
+    .form-group label { display: block; margin-bottom: 8px; font-weight: bold; color: #94a3b8; }
+    .form-group input[type="number"] { width: 100%; padding: 12px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; color: #fff; box-sizing: border-box; }
+    .form-group input[type="number"]:focus { outline: none; border-color: #00f0ff; }
+    .btn-submit { width: 100%; padding: 14px; background: linear-gradient(45deg, #00f0ff, #0096ff); color: #000; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; transition: transform 0.2s; }
+    .btn-submit:hover { transform: scale(1.02); }
+    .no-alerts { text-align: center; padding: 20px; background: rgba(0, 255, 170, 0.1); border: 1px solid rgba(0, 255, 170, 0.3); border-radius: 12px; color: #00ffaa; }
+    .info-box { background: rgba(0, 150, 255, 0.1); padding: 20px; border-radius: 12px; margin-bottom: 20px; border-left: 4px solid #00f0ff; }
+    .info-box p { margin: 8px 0; color: #cbd5e1; }
+</style>
+<div class="container">
+    <h1>🔔 Alert Settings</h1>
+    {% if messages %}{% for message in messages %}<div class="alert alert-info"><div class="alert-icon">✅</div><div class="alert-message">{{ message }}</div></div>{% endfor %}{% endif %}
+    <div class="alerts-section">
+        <h2 style="color: #00f0ff; margin-bottom: 20px;">Current Alerts</h2>
+        {% if alerts %}
+            {% for alert in alerts %}<div class="alert alert-{{ alert.type }}"><div class="alert-icon">{{ alert.icon }}</div><div class="alert-message">{{ alert.message }}</div></div>{% endfor %}
+        {% else %}
+            <div class="no-alerts">✅ No alerts! Your usage is within healthy limits.</div>
+        {% endif %}
+    </div>
+    {% if latest_log %}
+    <div class="info-box">
+        <h3 style="margin-top: 0; color: #00f0ff;">📊 Latest Usage</h3>
+        <p><strong>Date:</strong> {{ latest_log.date }}</p>
+        <p><strong>Screen Time:</strong> {{ latest_log.total_screen_time }} hrs</p>
+        <p><strong>Unlocks:</strong> {{ latest_log.hourly_opens }}</p>
+        <p><strong>Status:</strong> <span style="color: {% if latest_log.prediction_result == 'Addicted' %}#ff2a5f{% else %}#00ffaa{% endif %}; font-weight: bold;">{{ latest_log.prediction_result }}</span></p>
+    </div>
+    {% endif %}
+    <div class="settings-form">
+        <h2 style="color: #00f0ff; margin-top: 0;">⚙️ Configure Thresholds</h2>
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group"><label>Screen Time Limit (hrs/day):</label><input type="number" step="0.5" name="screen_time_limit" value="{{ alert_settings.screen_time_limit }}" required></div>
+            <div class="form-group"><label>Phone Unlock Limit (/day):</label><input type="number" name="unlock_limit" value="{{ alert_settings.unlock_limit }}" required></div>
+            <div class="form-group"><label>Social Media Limit (hrs/day):</label><input type="number" step="0.5" name="social_media_limit" value="{{ alert_settings.social_media_limit }}" required></div>
+            <div class="form-group"><label style="display:flex; align-items:center; gap:10px;"><input type="checkbox" name="alerts_enabled" {% if alert_settings.alerts_enabled %}checked{% endif %} style="width:20px;height:20px;"> Enable Alerts</label></div>
+            <button type="submit" class="btn-submit">Save Settings</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

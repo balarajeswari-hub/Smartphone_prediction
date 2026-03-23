@@ -1,0 +1,48 @@
+{%extends 'users/userbase.html'%}
+{%block contents%}
+<style>
+.dataset-container {
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 30px;
+    background: rgba(10, 20, 40, 0.5);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+    color: #e2e8f0;
+    overflow-x: auto;
+}
+.dataset-container h2 {
+    text-align: center;
+    color: #00f0ff;
+    margin-bottom: 25px;
+    font-size: 2.5rem;
+}
+table {
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+  color: #fff;
+}
+table td, table th {
+  border: 1px solid rgba(255,255,255,0.1);
+  padding: 12px;
+  text-align: center;
+}
+table tr:nth-child(even){ background-color: rgba(255,255,255,0.05); }
+table tr:hover { background-color: rgba(0, 240, 255, 0.2); }
+table th {
+  padding-top: 15px; padding-bottom: 15px;
+  background-color: rgba(0, 150, 255, 0.3);
+  color: #00f0ff; font-weight: bold;
+}
+</style>
+<section class="content">
+    <div class="dataset-container">
+        <h2>Dataset Overview</h2>
+        {{data|safe}}
+    </div>
+</section>
+{%endblock%}

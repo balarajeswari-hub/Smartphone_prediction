@@ -1,0 +1,61 @@
+{% extends 'admins/adminbase.html' %}
+{% load static %}
+{% block contents %}
+<style>
+    .dashboard-header { text-align: center; margin-bottom: 40px; }
+    .dashboard-title {
+        font-size: 3rem; font-weight: 800;
+        background: linear-gradient(135deg, #ff2a5f, #0096ff);
+        -webkit-background-clip: text; background-clip: text; color: transparent;
+        text-shadow: 0 10px 20px rgba(255, 42, 95, 0.3);
+    }
+    .admin-grid {
+        display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+        gap: 30px; max-width: 1200px; margin: 0 auto;
+    }
+    .admin-card {
+        background: rgba(10, 20, 40, 0.5); backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 20px; padding: 25px; transition: transform 0.3s, box-shadow 0.3s;
+        display: flex; align-items: center; gap: 20px;
+    }
+    .admin-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 40px rgba(0,0,0,0.5), inset 0 0 0 1px rgba(255, 42, 95, 0.3);
+    }
+    .admin-card img {
+        width: 150px; height: 150px; object-fit: cover; border-radius: 12px; box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+    }
+    .admin-card-content { text-align: left; }
+    .admin-card h2 { color: #e2e8f0; font-size: 1.4rem; margin-top: 0; margin-bottom: 10px; }
+    .admin-card p { color: #94a3b8; font-size: 0.9rem; line-height: 1.5; margin: 0; }
+</style>
+
+<div class="dashboard-header">
+    <h1 class="dashboard-title">System Overview</h1>
+</div>
+
+<div class="admin-grid">
+    <div class="admin-card">
+        <img src="{% static 'img/digital_void_1773895672647.png' %}" alt="Data">
+        <div class="admin-card-content">
+            <h2>Understanding Addiction</h2>
+            <p>Smartphone addiction is a growing concern affecting mental health. This core system actively monitors and flags high-risk behavioral patterns in registered subjects.</p>
+        </div>
+    </div>
+    <div class="admin-card">
+        <img src="{% static 'img/modern_addiction_chains_1773895643874.png' %}" alt="Analysis">
+        <div class="admin-card-content">
+            <h2>Data Collection & Analysis</h2>
+            <p>We collect comprehensive metrics like screen time and app frequency, utilizing feature engineering to train predictive engines for precise intervention.</p>
+        </div>
+    </div>
+    <div class="admin-card">
+        <img src="{% static 'img/time_drain_1773895690533.png' %}" alt="Time">
+        <div class="admin-card-content">
+            <h2>Model Development</h2>
+            <p>Deployed algorithms include Random Forest, Logistic Regression, and SVMs. Performance metrics are continuously validated for deployment.</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

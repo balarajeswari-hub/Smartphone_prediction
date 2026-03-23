@@ -1,0 +1,119 @@
+{% extends 'users/userbase.html' %}
+{% load static %}
+
+{% block contents %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartPhone Addiction</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #007bff;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Input Your Data for Addiction Prediction</h1>
+        <form method="post" action="{% url 'prediction' %}">
+            {% csrf_token %}
+
+            <label for="whatsapp">Whatsapp (hours):</label>
+            <input type="number" step="0.01" name="whatsapp" required placeholder="Ex: 9">
+
+            <label for="instagram">Instagram (hours):</label>
+            <input type="number" step="0.01" name="instagram" required placeholder="Ex: 7">
+
+            <label for="snapchat">Snapchat (hours):</label>
+            <input type="number" step="0.01" name="snapchat" required placeholder="Ex: 2">
+
+            <label for="telegram">Telegram (hours):</label>
+            <input type="number" step="0.01" name="telegram" required placeholder="Ex: 0.5">
+
+            <label for="facebook">Facebook (hours):</label>
+            <input type="number" step="0.01" name="facebook" required placeholder="Ex: 0">
+
+            <label for="bereal">BeReal (hours):</label>
+            <input type="number" step="0.01" name="bereal" required placeholder="Ex: 0">
+
+            <label for="tiktok">TikTok (hours):</label>
+            <input type="number" step="0.01" name="tiktok" required placeholder="Ex: 0">
+
+            <label for="wechat">WeChat (hours):</label>
+            <input type="number" step="0.01" name="wechat" required placeholder="Ex: 0">
+
+            <label for="twitter">Twitter (hours):</label>
+            <input type="number" step="0.01" name="twitter" required placeholder="Ex: 0">
+
+            <label for="linkedin">LinkedIn (hours):</label>
+            <input type="number" step="0.01" name="linkedin" required placeholder="Ex: 4">
+
+            <label for="messages">Messages (hours):</label>
+            <input type="number" step="0.01" name="messages" required placeholder="Ex: 0.5">
+
+            <label for="total_time">Total Screen Time (hours):</label>
+            <input type="number" step="0.01" name="total_time" required placeholder="Ex: 22">
+
+            <label for="hourly_open">Hourly Opens (count):</label>
+            <input type="number" name="hourly_open" required placeholder="Ex: 111">
+
+            <button type="submit">Predict</button>
+        </form>
+    </div>
+</body>
+</html>
+
+{% endblock %}

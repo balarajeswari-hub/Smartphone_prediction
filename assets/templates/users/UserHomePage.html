@@ -1,0 +1,68 @@
+{% extends 'users/userbase.html' %}
+{% load static %}
+{% block contents %}
+<style>
+    .dashboard-header {
+        text-align: center; margin-bottom: 40px;
+    }
+    .dashboard-title {
+        font-size: 3rem; font-weight: 800;
+        background: linear-gradient(135deg, #00ffaa, #0096ff);
+        -webkit-background-clip: text; background-clip: text; color: transparent;
+        text-shadow: 0 10px 20px rgba(0, 255, 170, 0.3);
+    }
+    .dashboard-grid {
+        display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 30px; max-width: 1200px; margin: 0 auto;
+    }
+    .dash-card {
+        background: rgba(10, 20, 40, 0.5); backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 20px; padding: 25px; transition: transform 0.3s, box-shadow 0.3s;
+        text-align: center;
+    }
+    .dash-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 40px rgba(0,0,0,0.5), inset 0 0 0 1px rgba(0, 255, 170, 0.3);
+    }
+    .dash-card img {
+        width: 100%; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+    }
+    .dash-card h3 { color: #e2e8f0; font-size: 1.5rem; margin-bottom: 10px; }
+    .dash-card p { color: #94a3b8; font-size: 0.95rem; }
+    .action-btn {
+        display: inline-block; margin-top: 15px; padding: 10px 20px;
+        background: linear-gradient(45deg, #0096ff, #00ffaa); color: #000;
+        font-weight: bold; text-decoration: none; border-radius: 8px; transition: transform 0.2s;
+    }
+    .action-btn:hover { transform: scale(1.05); }
+</style>
+
+<div class="dashboard-header">
+    <h1 class="dashboard-title">Welcome to Your Dashboard</h1>
+    <p style="color: #94a3b8; font-size: 1.2rem;">Track, analyze, and regain control of your digital life.</p>
+</div>
+
+<div class="dashboard-grid">
+    <div class="dash-card">
+        <img src="{% static 'img/modern_addiction_chains_1773895643874.png' %}" alt="Usage Tracking">
+        <h3>Analyze Usage Patterns</h3>
+        <p>Upload your smartphone usage dataset to see exactly where your time goes.</p>
+        <a href="{% url 'ViewDataset' %}" class="action-btn">View Dataset</a>
+    </div>
+
+    <div class="dash-card">
+        <img src="{% static 'img/digital_void_1773895672647.png' %}" alt="Predictive Analysis">
+        <h3>Run Predictive Models</h3>
+        <p>Utilize robust Machine Learning algorithms to predict addiction levels accurately.</p>
+        <a href="{% url 'prediction' %}" class="action-btn">Start Analysis</a>
+    </div>
+
+    <div class="dash-card">
+        <img src="{% static 'img/time_drain_1773895690533.png' %}" alt="Reclaim Time">
+        <h3>Review Behavior History</h3>
+        <p>Monitor your progress over time and see the impact of your digital detox.</p>
+        <a href="{% url 'behavior_history' %}" class="action-btn">My History</a>
+    </div>
+</div>
+{% endblock %}

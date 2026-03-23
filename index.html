@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smartphone Addiction Prediction - AI Model</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+</head>
+
+<body>
+    <!-- ANTI-GRAVITY BACKGROUND -->
+    <div class="space-background"></div>
+    <div class="particles-container">
+        <!-- Giant Glowing Orbs -->
+        <div class="glow-orb-bg orb-bg-1"></div>
+        <div class="glow-orb-bg orb-bg-2"></div>
+        <div class="glow-orb-bg orb-bg-3"></div>
+        <div class="glow-orb-bg orb-bg-4"></div>
+        <!-- Floating Particles -->
+        <div class="particle p1 parallax-layer" data-speed="0.05"></div>
+        <div class="particle p2 parallax-layer" data-speed="0.1"></div>
+        <div class="particle p3 parallax-layer" data-speed="0.02"></div>
+        <div class="particle p4 parallax-layer" data-speed="0.08"></div>
+        <div class="particle p5 parallax-layer" data-speed="0.12"></div>
+        <div class="particle p6 parallax-layer" data-speed="0.03"></div>
+        <div class="particle p7 parallax-layer" data-speed="0.07"></div>
+        <div class="particle p8 parallax-layer" data-speed="0.09"></div>
+        <div class="particle p9 parallax-layer" data-speed="0.11"></div>
+        <div class="particle p10 parallax-layer" data-speed="0.04"></div>
+        <div class="particle p11 parallax-layer" data-speed="0.06"></div>
+        <div class="particle p12 parallax-layer" data-speed="0.15"></div>
+    </div>
+
+    <!-- GLASS NAVBAR -->
+    <nav class="glass-nav">
+        <div class="logo"></div>
+        <ul class="nav-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#impact">Impact</a></li>
+            <li><a href="#user-login">User Login</a></li>
+            <li><a href="#admin-login" class="btn-primary">Admin</a></li>
+        </ul>
+    </nav>
+
+    <!-- FLOATING HERO TITLE -->
+    <section id="home" class="hero">
+        <h1 class="hero-title">Machine Learning Model For<br>Prediction of Smartphone Addiction</h1>
+        <p class="hero-subtitle">Advanced Machine Learning models to analyze, predict, and combat the unseen tethers of
+            digital dependency.</p>
+        <a href="#impact" class="btn-glow">Explore The Model</a>
+    </section>
+
+    <!-- HIGH QUALITY AI IMAGES GRID -->
+    <section id="impact" class="impact-section">
+        <h2 class="section-title">The Weight of Connection</h2>
+        <div class="image-grid">
+            <div class="glass-image-card gsap-card">
+                <img src="img/modern_addiction_chains_1773895643874.png" alt="Digital Chains">
+                <h3>The Invisible Tether</h3>
+                <p>We are subtly chained to our devices, exchanging our most valuable asset—time—for fleeting digital
+                    dopamine hits.</p>
+            </div>
+
+            <div class="glass-image-card gsap-card">
+                <img src="img/digital_void_1773895672647.png" alt="Digital Void">
+                <h3>Falling into the Void</h3>
+                <p>The screen acts as a mesmerizing portal, slowly pulling users deeper into a disconnected reality.</p>
+            </div>
+
+            <div class="glass-image-card gsap-card">
+                <img src="img/time_drain_1773895690533.png" alt="Time Drain">
+                <h3>The Ultimate Drain</h3>
+                <p>Hours slip away like grains of sand, funneling down into the endless cycle of the next notification.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3D LOGIN SECTIONS -->
+    <div class="logins-wrapper">
+        <!-- USER LOGIN 3D CARD -->
+        <section id="user-login" class="login-section">
+            <div class="tilt-card user-card">
+                <div class="tilt-card-content">
+                    <h2 class="login-heading user-heading">User Portal</h2>
+                    <form>
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Enter User ID">
+                        </div>
+                        <div class="form-group">
+                            <input type="password" class="form-control" placeholder="Enter Password">
+                        </div>
+                        <button class="btn-login user-btn" type="button">Authenticate</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- ADMIN LOGIN 3D CARD -->
+        <section id="admin-login" class="login-section">
+            <div class="tilt-card admin-card">
+                <div class="tilt-card-content">
+                    <h2 class="login-heading admin-heading">Admin Core</h2>
+                    <form>
+                        <div class="form-group">
+                            <input type="text" class="form-control admin-control" placeholder="Enter Admin ID">
+                        </div>
+                        <div class="form-group">
+                            <input type="password" class="form-control admin-control" placeholder="Enter Password">
+                        </div>
+                        <div class="button-group">
+                            <button class="btn-login admin-btn" type="button">Override</button>
+                            <button class="btn-reset" type="reset">Purge</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

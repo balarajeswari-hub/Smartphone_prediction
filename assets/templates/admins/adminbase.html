@@ -1,0 +1,89 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Core | Dashboard</title>
+    <style>
+        body { margin: 0; padding: 0; font-family: 'Arial', sans-serif; background-color: #080015; color: #fff; overflow-x: hidden; }
+        
+        .space-background { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: linear-gradient(-45deg, #02111b, #0a2540, #001f3f, #0d1b2a); background-size: 400% 400%; animation: gradientShift 15s ease infinite; z-index: -3; pointer-events: none; }
+        @keyframes gradientShift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        
+        .particles-container { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -2; pointer-events: none; overflow: hidden; }
+        .glow-orb-bg { position: absolute; border-radius: 50%; filter: blur(100px); opacity: 0.7; animation: floatOrb 25s infinite alternate ease-in-out; }
+        .orb-bg-1 { width: 50vw; height: 50vw; background: rgba(255, 42, 95, 0.25); top: -20%; left: -10%; animation-duration: 30s; }
+        .orb-bg-2 { width: 40vw; height: 40vw; background: rgba(0, 150, 255, 0.25); bottom: -10%; right: -10%; animation-duration: 25s; animation-direction: alternate-reverse; }
+        @keyframes floatOrb { 0% { transform: translateY(0) translateX(0) scale(1); } 50% { transform: translateY(-80px) translateX(60px) scale(1.1); } 100% { transform: translateY(40px) translateX(-80px) scale(0.9); } }
+        
+        .particle { position: absolute; border-radius: 50%; background: rgba(255, 255, 255, 0.9); box-shadow: 0 0 15px 3px rgba(255, 255, 255, 0.8); animation: drifting 20s cubic-bezier(0.4, 0, 0.2, 1) infinite; }
+        .p1 { width: 8px; height: 8px; top: 15%; left: 20%; animation-duration: 25s; }
+        .p2 { width: 15px; height: 15px; top: 35%; left: 85%; animation-duration: 20s; animation-delay: -5s; background: #ff2a5f; box-shadow: 0 0 25px 8px rgba(255, 42, 95, 0.6); }
+        .p3 { width: 10px; height: 10px; top: 45%; left: 65%; animation-duration: 22s; animation-delay: -8s; }
+        .p4 { width: 22px; height: 22px; top: 55%; left: 25%; animation-duration: 19s; animation-delay: -4s; background: #7000ff; box-shadow: 0 0 30px 10px rgba(112, 0, 255, 0.6); }
+        @keyframes drifting { 0% { transform: translate(0, 0) scale(1); opacity: 0.3; } 25% { transform: translate(80px, -120px) scale(1.4); opacity: 1; } 50% { transform: translate(-50px, -240px) scale(0.7); opacity: 0.6; } 75% { transform: translate(-100px, -100px) scale(1.3); opacity: 0.9; } 100% { transform: translate(0, 0) scale(1); opacity: 0.3; } }
+
+        .glass-nav { position: fixed; top: 0; left: 0; width: 100%; box-sizing: border-box; padding: 1rem 3%; display: flex; justify-content: right; align-items: center; background: rgba(20, 20, 30, 0.4); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-bottom: 1px solid rgba(255, 255, 255, 0.08); z-index: 100; }
+        .logo { font-size: 1.5rem; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: #e2e8f0; }
+        .logo .dot { color: #ff2a5f; }
+        .nav-links { display: flex; gap: 2.5rem; list-style: none; align-items: center; margin: 0; }
+        .nav-links li { margin: 0; padding: 0; }
+        .nav-links a { color: #e2e8f0; text-decoration: none; font-weight: 600; font-size: 1rem; transition: color 0.3s ease; }
+        .nav-links a:hover { color: #ff2a5f; }
+        .btn-logout { background: #ff2a5f; border: 1px solid #ff2a5f; color: #fff !important; padding: 0.6rem 1.5rem; border-radius: 30px; box-shadow: 0 0 15px rgba(255, 42, 95, 0.4); transition: all 0.3s ease; display: inline-block !important; font-weight: bold; }
+
+        .main-content { margin-top: 100px; padding: 40px; }
+        
+        /* Table / UI general reset to fit dark theme */
+        table { color: #fff; width: 100%; background: rgba(20, 20, 30, 0.5); backdrop-filter: blur(10px); border-radius: 12px; }
+        th { background: rgba(255, 42, 95, 0.5); color: white; padding: 15px; }
+        td { padding: 15px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
+    </style>
+</head>
+<body>
+    <div class="space-background"></div>
+    <div class="particles-container">
+        <div class="glow-orb-bg orb-bg-1"></div><div class="glow-orb-bg orb-bg-2"></div>
+        <div class="particle p1 parallax-layer" data-speed="0.05"></div>
+        <div class="particle p2 parallax-layer" data-speed="0.1"></div>
+        <div class="particle p3 parallax-layer" data-speed="0.08"></div>
+        <div class="particle p4 parallax-layer" data-speed="0.12"></div>
+    </div>
+
+    <nav class="glass-nav">
+        <div class="logo"></div>
+        <ul class="nav-links">
+            <li><a href="{% url 'AdminHome' %}">Dashboard</a></li>
+            <li><a href="userDetails">User Details</a></li>
+            <li><a href="{% url 'index' %}" class="btn-logout">Logout</a></li>
+        </ul>
+    </nav>
+    
+    <div class="main-content">
+        {% block contents %}
+        {% endblock %}
+    </div>
+
+    <script>
+        let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2, currentX = window.innerWidth / 2, currentY = window.innerHeight / 2;
+        document.addEventListener('mousemove', (e) => { mouseX = e.pageX; mouseY = e.pageY; });
+        function animateParallax() {
+            if(window.innerWidth >= 968) {
+                currentX += (mouseX - currentX) * 0.08; currentY += (mouseY - currentY) * 0.08;
+                document.querySelectorAll('.parallax-layer').forEach(layer => {
+                    let speed = parseFloat(layer.getAttribute('data-speed')) || 0;
+                    if(speed !== 0) {
+                        speed = speed * 1.5;
+                        const x = (window.innerWidth / 2 - currentX) * speed;
+                        const y = (window.innerHeight / 2 - currentY) * speed;
+                        layer.style.transform = `translateX(${x}px) translateY(${y + window.scrollY * (speed * -3)}px)`;
+                    }
+                });
+            }
+            requestAnimationFrame(animateParallax);
+        }
+        animateParallax();
+    </script>
+</body>
+</html>

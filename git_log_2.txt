@@ -1,0 +1,5 @@
+﻿3095b20 Fix image loading and add logo
+a5d105f Align registration fields with backend
+b20d28d Your commit message
+28e8520 Your commit message
+ba6fede Your commit message

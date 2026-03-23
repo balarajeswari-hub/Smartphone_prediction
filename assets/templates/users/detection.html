@@ -1,0 +1,152 @@
+{% extends 'users/userbase.html' %}
+{% load static %}
+
+{% block contents %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analysis Result</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            text-align: center; /* Center-align text for better aesthetics */
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            color: #007bff;
+            margin-bottom: 20px;
+            font-size: 24px; /* Increased font size for heading */
+        }
+
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border: 2px solid #007bff; /* Thicker border */
+            border-radius: 5px;
+            background-color: #e7f3ff; /* Light blue background */
+            font-size: 20px; /* Increased font size for the result */
+            font-weight: bold; /* Bold text for emphasis */
+        }
+
+        .image-container {
+            margin-top: 20px;
+        }
+
+        .result-image {
+            max-width: 100%; /* Ensure the image scales nicely */
+            height: auto;
+            border-radius: 10px; /* Rounded corners for images */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Subtle shadow for images */
+        }
+
+        .back-button {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            text-decoration: none; /* Remove underline */
+            transition: background-color 0.3s;
+        }
+
+        .back-button:hover {
+            background-color: #0056b3;
+        }
+
+        .recommendations {
+            margin-top: 30px;
+            text-align: left;
+            background-color: #fff3cd;
+            padding: 20px;
+            border-radius: 10px;
+            border: 2px solid #ffc107;
+        }
+
+        .recommendations h3 {
+            color: #856404;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .recommendations ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .recommendations li {
+            padding: 10px;
+            margin-bottom: 10px;
+            background-color: #ffffff;
+            border-left: 4px solid #ffc107;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .stats {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            text-align: left;
+        }
+
+        .stats p {
+            margin: 8px 0;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Smartphone Addiction Analysis Result:</h2>
+        <div class="result">
+            <p>{{ result }}</p>
+        </div>
+
+        <div class="stats">
+            <p><strong>📊 Your Usage Statistics:</strong></p>
+            <p>⏱️ Total Screen Time: {{ total_time }} hours</p>
+            <p>🔓 Phone Unlocks: {{ hourly_open }} times</p>
+        </div>
+
+        <div class="recommendations">
+            <h3>💡 Personalized Recommendations</h3>
+            <ul>
+                {% for recommendation in recommendations %}
+                <li>{{ recommendation }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div class="image-container">
+            {% if result == "Addicted" %}
+                <img src="{% static 'img/background10.jpg' %}" alt="Addicted" class="result-image">
+            {% elif result == "Not Addicted" %}
+                <img src="{% static 'img/background9.jpg' %}" alt="Not Addicted" class="result-image">
+            {% else %}
+                <p>Invalid result.</p>
+            {% endif %}
+        </div>
+        <a href="{% url 'prediction' %}" class="back-button">Back to Input Form</a>
+    </div>
+</body>
+</html>
+{% endblock %}

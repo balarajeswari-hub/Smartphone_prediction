@@ -1,0 +1,143 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block contents %}
+<style>
+    .login-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 80vh;
+        perspective: 1000px;
+    }
+
+    .tilt-card {
+        width: 100%;
+        max-width: 420px;
+        background: rgba(20, 20, 30, 0.45);
+        backdrop-filter: blur(25px);
+        -webkit-backdrop-filter: blur(25px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 24px;
+        padding: 40px;
+        box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6), inset 0 0 0 1px rgba(0, 240, 255, 0.2);
+        transform-style: preserve-3d;
+        transition: transform 0.1s;
+    }
+
+    .tilt-card-content {
+        transform: translateZ(60px); /* Pushes content forward in 3D space */
+        text-align: center;
+    }
+
+    .login-heading {
+        margin-bottom: 30px;
+        font-size: 2.2rem;
+        font-weight: 800;
+        background: linear-gradient(135deg, #00f0ff, #7000ff);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        text-shadow: 0 10px 20px rgba(112, 0, 255, 0.3);
+    }
+
+    .form-group {
+        margin-bottom: 25px;
+        transform: translateZ(30px);
+    }
+
+    .form-control {
+        background: rgba(0, 0, 0, 0.3);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        color: #fff;
+        padding: 15px 20px;
+        transition: all 0.3s ease;
+        width: 100%;
+    }
+
+    .form-control:focus {
+        background: rgba(0, 0, 0, 0.5);
+        border-color: #00f0ff;
+        box-shadow: 0 0 15px rgba(0, 240, 255, 0.3);
+        color: #fff;
+        outline: none;
+    }
+
+    .btn-login {
+        background: linear-gradient(45deg, #00f0ff, #7000ff);
+        border: none;
+        border-radius: 12px;
+        color: white;
+        padding: 15px;
+        font-weight: bold;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        width: 100%;
+        transition: all 0.3s ease;
+        transform: translateZ(40px);
+        box-shadow: 0 10px 20px rgba(112, 0, 255, 0.4);
+        cursor: pointer;
+    }
+
+    .btn-login:hover {
+        transform: translateZ(50px) scale(1.05);
+        box-shadow: 0 15px 30px rgba(0, 240, 255, 0.6);
+    }
+
+    .forgot-link {
+        display: block;
+        margin-top: 20px;
+        color: #94a3b8;
+        text-decoration: none;
+        transform: translateZ(20px);
+        transition: color 0.3s;
+    }
+
+    .forgot-link:hover {
+        color: #00f0ff;
+    }
+</style>
+
+<div class="login-wrapper">
+    <div class="tilt-card" id="userLoginCard">
+        <div class="tilt-card-content">
+            <h2 class="login-heading">User Area</h2>
+            <form action="{% url 'UserLoginCheck' %}" method="POST">
+                {% csrf_token %}
+                <div class="form-group">
+                    <input type="text" class="form-control" name="loginid" required placeholder="Enter Login ID">
+                </div>
+                <div class="form-group">
+                    <input type="password" class="form-control" name="pswd" required placeholder="Enter Password">
+                </div>
+                <button class="btn-login" type="submit">Authenticate</button>
+                <a href="{% url 'forgot_password' %}" class="forgot-link">Forgot Password?</a>
+                
+                {% if messages %}
+                <div style="margin-top: 20px; transform: translateZ(20px);">
+                    {% for message in messages %}
+                    <div style="background: rgba(0,255,100,0.1); border: 1px solid #00ff64; color: #00ff64; border-radius: 12px; padding: 10px;">{{ message }}</div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    const userCard = document.getElementById('userLoginCard');
+    
+    document.addEventListener('mousemove', (e) => {
+        if(!userCard) return;
+        const winX = (e.clientX / window.innerWidth - 0.5) * 20; 
+        const winY = -(e.clientY / window.innerHeight - 0.5) * 20;
+        
+        userCard.style.transform = `rotateY(${winX}deg) rotateX(${winY}deg)`;
+    });
+    
+    document.addEventListener('mouseleave', () => {
+        if(userCard) userCard.style.transform = `rotateY(0deg) rotateX(0deg)`;
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,53 @@
+{% extends 'users/userbase.html' %}
+{% load static %}
+{% block contents %}
+<style>
+    .container {
+        max-width: 900px;
+        margin: 40px auto;
+        padding: 30px;
+        background: rgba(10, 20, 40, 0.5); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 20px;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+        color: #e2e8f0;
+    }
+    h1 { text-align: center; color: #00f0ff; margin-bottom: 30px; }
+    .chart-container { text-align: center; margin-bottom: 40px; }
+    .chart-container img { max-width: 100%; height: auto; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; color: #fff; }
+    table thead { background-color: rgba(0, 150, 255, 0.3); color: #00f0ff; }
+    table th, table td { padding: 12px; text-align: center; border: 1px solid rgba(255,255,255,0.1); }
+    table tbody tr:nth-child(even) { background-color: rgba(255,255,255,0.05); }
+    table tbody tr:hover { background-color: rgba(0, 240, 255, 0.2); }
+    .best-model { background-color: rgba(0, 255, 170, 0.2) !important; font-weight: bold; color: #00ffaa; }
+</style>
+<div class="container">
+    <h1>Model Comparison Results</h1>
+    <div class="chart-container">
+        <img src="/{{ comparison_chart }}" alt="Model Comparison Chart">
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>Model</th>
+                <th>Accuracy (%)</th>
+                <th>Precision (%)</th>
+                <th>Recall (%)</th>
+                <th>F1-Score (%)</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for result in results %}
+            <tr class="{% if result.model == 'Random Forest' %}best-model{% endif %}">
+                <td>{{ result.model }}</td>
+                <td>{{ result.accuracy }}</td>
+                <td>{{ result.precision }}</td>
+                <td>{{ result.recall }}</td>
+                <td>{{ result.f1_score }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

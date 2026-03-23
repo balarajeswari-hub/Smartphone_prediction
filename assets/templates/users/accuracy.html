@@ -1,0 +1,84 @@
+{% extends 'users/userbase.html' %}
+{% load static %}
+
+{% block contents %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Model Accuracy and Graphs</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url("{% static 'img/background4.jpg' %}"); /* Background image */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            color: #333; /* Text color */
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        h1 {
+            text-align: center;
+            color: #3498db; /* Title color */
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: rgba(255, 255, 255, 0.5); /* Slightly transparent white card background */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            color: #2c3e50;
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 8px;
+            background-color: #FF6F61;
+            border-left: 5px solid #3498db;
+            font-size: 1.8em;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+
+        .accuracy {
+            padding: 10px;
+            background-color: #e7f3fe;
+            border: 1px solid #3498db;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 1em;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="accuracy">
+            <h1>Model Accuracy: {{ accuracy }}%</h1>
+        </div>
+        <br><br><br>
+        <div>
+            <h2>Confusion Matrix</h2>
+            <img src="/{{ confusion_matrix_img }}" alt="Confusion Matrix">
+        </div>
+        <div>
+            <h2>Feature Importance</h2>
+            <img src="/{{ feature_importance_img }}" alt="Feature Importance">
+        </div>
+    </div>
+</body>
+{% endblock %}
