@@ -54,6 +54,9 @@ urlpatterns = [
     path("model-comparison/", usr.ModelComparison, name="model_comparison"),
     path("behavior-history/", usr.UserBehaviorHistory, name="behavior_history"),
     path("alert-settings/", usr.AlertSettings, name="alert_settings"),
+    path("api/training/", usr.TrainingAPI, name="api_training"),
+    path("api/dataset/", usr.DatasetAPI, name="api_dataset"),
+    path("api/model-comparison/", usr.ModelComparisonAPI, name="api_model_comparison"),
     path("index/", usr.index, name="index"),
    
 

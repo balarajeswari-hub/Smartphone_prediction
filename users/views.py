@@ -218,6 +218,24 @@ def ViewDataset(request):
     df = df.to_html(index=None)
     return render(request, 'users/viewData.html', {'data': df})
 
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+import numpy as np
+
+@csrf_exempt
+def DatasetAPI(request):
+    try:
+        dataset_path = os.path.join(settings.MEDIA_ROOT, 'Filtered_ClassSurvey.csv')
+        if not os.path.exists(dataset_path):
+            dataset_path = os.path.join(settings.MEDIA_ROOT, 'ClassSurvey.csv')
+        import pandas as pd
+        df = pd.read_csv(dataset_path, nrows=100)
+        df = df.replace({np.nan: None})
+        data = df.to_dict(orient='records')
+        return JsonResponse({'status': 'success', 'data': data})
+    except Exception as e:
+        return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
+
 
 from django.shortcuts import render, redirect
 from .models import UserRegistrationModel, UserBehaviorTracking, UserAlertSettings
@@ -438,6 +456,186 @@ def ModelComparison(request):
         'results': results,
         'comparison_chart': 'media/model_comparison.png'
     })
+
+
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+
+@csrf_exempt
+def TrainingAPI(request):
+    try:
+        # Load dataset
+        data_set = pd.read_csv('media/ClassSurvey.csv')
+
+        # Encode the target column
+        encoder = LabelEncoder()
+        data_set['SocialMediaAddiction'] = encoder.fit_transform(data_set['SocialMediaAddiction'])
+
+        # Select relevant columns
+        columns = [
+            'Whatsapp', 'Instagram', 'Snapchat', 'Telegram', 'Facebook', 'BeReal',
+            'TikTok', 'WeChat', 'Twitter', 'Linkedin', 'Messages',
+            'TotalSocialMediaScreenTime', 'Number of times opened (hourly intervals)',
+            'SocialMediaAddiction'
+        ]
+        df = data_set[columns]
+
+        # Impute missing values
+        imputer = SimpleImputer(strategy='mean')
+        df[columns] = imputer.fit_transform(df[columns])
+
+        # Prepare features and target variable
+        X = df.drop('SocialMediaAddiction', axis=1)
+        y = df['SocialMediaAddiction']
+
+        smote = SMOTE(random_state=42)
+        X_balanced, y_balanced = smote.fit_resample(X, y)
+
+        # Split data
+        X_train, X_test, y_train, y_test = train_test_split(X_balanced, y_balanced, test_size=0.2, random_state=42)
+
+        # Initialize and train the RandomForest model
+        random_forest = RandomForestClassifier()
+        random_forest.fit(X_train, y_train)
+
+        # Make predictions
+        y_pred = random_forest.predict(X_test)
+
+        # Calculate accuracy
+        accuracy = accuracy_score(y_test, y_pred)
+
+        # Confusion matrix
+        cm = confusion_matrix(y_test, y_pred)
+        plt.figure(figsize=(6, 4))
+        sns.heatmap(cm, annot=True, fmt='d', cmap='Blues')
+        plt.title('Confusion Matrix')
+        plt.xlabel('Predicted')
+        plt.ylabel('Actual')
+        plt.savefig(os.path.join(settings.MEDIA_ROOT, 'confusion_matrix.png'))
+        plt.close()
+        
+        # Feature importance
+        feature_importances = random_forest.feature_importances_
+        features = X.columns
+        feature_df = pd.DataFrame({'Features': features, 'Importance': feature_importances})
+        feature_df = feature_df.sort_values(by='Importance', ascending=False)
+
+        plt.figure(figsize=(8, 6))
+        sns.barplot(x='Importance', y='Features', data=feature_df, palette="coolwarm")
+        plt.title('Feature Importance')
+        plt.xlabel('Importance')
+        plt.ylabel('Features')
+        plt.savefig(os.path.join(settings.MEDIA_ROOT, 'feature_importance.png'))
+        plt.close()
+        
+        # Save the trained model
+        joblib.dump(random_forest, 'media/social_media_addiction_model.pkl')
+
+        return JsonResponse({
+            'status': 'success',
+            'accuracy': round(accuracy * 100, 2),
+            'confusion_matrix_img': '/media/confusion_matrix.png',
+            'feature_importance_img': '/media/feature_importance.png'
+        })
+    except Exception as e:
+        return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
+
+
+@csrf_exempt
+def ModelComparisonAPI(request):
+    try:
+        # Load dataset
+        data_set = pd.read_csv('media/ClassSurvey.csv')
+
+        # Encode the target column
+        encoder = LabelEncoder()
+        data_set['SocialMediaAddiction'] = encoder.fit_transform(data_set['SocialMediaAddiction'])
+
+        # Select relevant columns
+        columns = [
+            'Whatsapp', 'Instagram', 'Snapchat', 'Telegram', 'Facebook', 'BeReal',
+            'TikTok', 'WeChat', 'Twitter', 'Linkedin', 'Messages',
+            'TotalSocialMediaScreenTime', 'Number of times opened (hourly intervals)',
+            'SocialMediaAddiction'
+        ]
+        df = data_set[columns]
+
+        # Impute missing values
+        imputer = SimpleImputer(strategy='mean')
+        df[columns] = imputer.fit_transform(df[columns])
+
+        # Prepare features and target variable
+        X = df.drop('SocialMediaAddiction', axis=1)
+        y = df['SocialMediaAddiction']
+
+        # Apply SMOTE
+        smote = SMOTE(random_state=42)
+        X_balanced, y_balanced = smote.fit_resample(X, y)
+
+        # Split data
+        X_train, X_test, y_train, y_test = train_test_split(X_balanced, y_balanced, test_size=0.2, random_state=42)
+
+        # Define models
+        models = {
+            'Decision Tree': DecisionTreeClassifier(random_state=42),
+            'Random Forest': RandomForestClassifier(random_state=42),
+            'Logistic Regression': LogisticRegression(max_iter=1000, random_state=42),
+            'SVM': SVC(random_state=42)
+        }
+
+        # Train and evaluate models
+        results = []
+        for name, model in models.items():
+            model.fit(X_train, y_train)
+            y_pred = model.predict(X_test)
+
+            accuracy = accuracy_score(y_test, y_pred)
+            precision = precision_score(y_test, y_pred, average='weighted', zero_division=0)
+            recall = recall_score(y_test, y_pred, average='weighted', zero_division=0)
+            f1 = f1_score(y_test, y_pred, average='weighted', zero_division=0)
+
+            results.append({
+                'model': name,
+                'accuracy': round(accuracy * 100, 2),
+                'precision': round(precision * 100, 2),
+                'recall': round(recall * 100, 2),
+                'f1_score': round(f1 * 100, 2)
+            })
+
+        # Create comparison chart
+        model_names = [r['model'] for r in results]
+        accuracies = [r['accuracy'] for r in results]
+        precisions = [r['precision'] for r in results]
+        recalls = [r['recall'] for r in results]
+        f1_scores = [r['f1_score'] for r in results]
+
+        x = np.arange(len(model_names))
+        width = 0.2
+
+        fig, ax = plt.subplots(figsize=(12, 6))
+        ax.bar(x - 1.5*width, accuracies, width, label='Accuracy', color='#3498db')
+        ax.bar(x - 0.5*width, precisions, width, label='Precision', color='#2ecc71')
+        ax.bar(x + 0.5*width, recalls, width, label='Recall', color='#f39c12')
+        ax.bar(x + 1.5*width, f1_scores, width, label='F1-Score', color='#e74c3c')
+
+        ax.set_xlabel('Models', fontsize=12)
+        ax.set_ylabel('Score (%)', fontsize=12)
+        ax.set_title('Model Comparison - Performance Metrics', fontsize=14, fontweight='bold')
+        ax.set_xticks(x)
+        ax.set_xticklabels(model_names)
+        ax.legend()
+        ax.grid(axis='y', alpha=0.3)
+        plt.tight_layout()
+        plt.savefig(os.path.join(settings.MEDIA_ROOT, 'model_comparison.png'))
+        plt.close()
+
+        return JsonResponse({
+            'status': 'success', 
+            'data': results,
+            'comparison_chart': '/media/model_comparison.png'
+        })
+    except Exception as e:
+        return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
 
 
 def UserBehaviorHistory(request):

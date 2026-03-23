@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block contents %}
+<style>
+    .login-wrapper {
+        display: flex; justify-content: center; align-items: center;
+        min-height: 80vh; perspective: 1000px; padding: 40px;
+    }
+    .tilt-card {
+        width: 100%; max-width: 500px; background: rgba(20, 20, 30, 0.45);
+        backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
+        border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 24px;
+        padding: 40px; box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6), inset 0 0 0 1px rgba(0, 240, 255, 0.2);
+        transform-style: preserve-3d; transition: transform 0.1s;
+    }
+    .tilt-card-content { transform: translateZ(60px); text-align: left; }
+    .login-heading {
+        margin-bottom: 30px; font-size: 2.2rem; font-weight: 800; text-align: center;
+        background: linear-gradient(135deg, #00f0ff, #7000ff);
+        -webkit-background-clip: text; background-clip: text; color: transparent;
+        text-shadow: 0 10px 20px rgba(0, 240, 255, 0.3);
+    }
+    .form-group { margin-bottom: 20px; transform: translateZ(30px); }
+    .form-group label { color: #94a3b8; font-weight: 600; margin-bottom: 5px; display: block; }
+    .form-control {
+        background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 12px; color: #fff; padding: 12px 20px; width: 100%; transition: all 0.3s ease;
+    }
+    .form-control:focus { background: rgba(0, 0, 0, 0.5); border-color: #00f0ff; box-shadow: 0 0 15px rgba(0, 240, 255, 0.3); outline: none; color: #fff; }
+    .btn-login {
+        background: linear-gradient(45deg, #00f0ff, #7000ff); border: none; border-radius: 12px;
+        color: white; padding: 15px; font-weight: bold; text-transform: uppercase; width: 100%;
+        transition: all 0.3s ease; transform: translateZ(40px); box-shadow: 0 10px 20px rgba(112, 0, 255, 0.4); cursor: pointer; margin-top: 10px;
+    }
+    .btn-login:hover { transform: translateZ(50px) scale(1.05); box-shadow: 0 15px 30px rgba(0, 240, 255, 0.6); }
+</style>
+
+<div class="login-wrapper">
+    <div class="tilt-card" id="regCard">
+        <div class="tilt-card-content">
+            <h2 class="login-heading">Register Account</h2>
+            <form action="{% url 'UserRegisterForm' %}" method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="name">Name:</label>
+                    <input type="text" class="form-control" id="name" name="name" maxlength="100" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginid">Login ID:</label>
+                    <input type="text" class="form-control" id="loginid" name="loginid" maxlength="100" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input type="password" class="form-control" id="password" name="password" maxlength="100" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" required>
+                </div>
+                <div class="form-group">
+                    <label for="mobile">Mobile:</label>
+                    <input type="text" class="form-control" id="mobile" name="mobile" maxlength="10" pattern="[0-9]{10}" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" class="form-control" id="email" name="email" maxlength="100" required>
+                </div>
+                <div class="form-group">
+                    <label for="locality">Locality:</label>
+                    <input type="text" class="form-control" id="locality" name="locality" maxlength="100">
+                </div>
+                <div class="form-group">
+                    <label for="address">Full Address:</label>
+                    <textarea class="form-control" id="address" name="address" rows="3" placeholder="Enter Full Address" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="city">City:</label>
+                    <input type="text" class="form-control" id="city" name="city" maxlength="100" placeholder="City" required>
+                </div>
+                <div class="form-group">
+                    <label for="state">State:</label>
+                    <input type="text" class="form-control" id="state" name="state" maxlength="100" placeholder="State" required>
+                </div>
+                <button type="submit" class="btn-login">Create Account</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    const regCard = document.getElementById('regCard');
+    document.addEventListener('mousemove', (e) => {
+        if(!regCard) return;
+        const winX = (e.clientX / window.innerWidth - 0.5) * 10; 
+        const winY = -(e.clientY / window.innerHeight - 0.5) * 10;
+        regCard.style.transform = `rotateY(${winX}deg) rotateX(${winY}deg)`;
+    });
+    document.addEventListener('mouseleave', () => {
+        if(regCard) regCard.style.transform = `rotateY(0deg) rotateX(0deg)`;
+    });
+</script>
+{% endblock %}
